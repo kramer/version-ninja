@@ -1,4 +1,5 @@
-console.log(".~. begin .~.");
+var actionButtonCharacter = "C";
+var generatedMessageFormat = "%STORY_ID% [%TASK_ID%] %STORY_DESC% [%TASK_DESC%] ...";
 
 function getTaskCards() {
     return $("div.task-card-actions-container");
@@ -31,7 +32,11 @@ function generateAndCopyMessage() {
     var storyId = $.trim($("tr[rowid='" + storyInternalId + "'] span.number").text());
     var storyDesc = $("div.main-panel-scroller a[rel^='" + type + "']>span").text();
 
-    var message = storyId + " [" + taskId + "] " + storyDesc + " [" + taskDesc + "] ...";
+    var message = generatedMessageFormat
+        .replace("%STORY_ID%", storyId)
+        .replace("%STORY_DESC%", storyDesc)
+        .replace("%TASK_ID%", taskId)
+        .replace("%TASK_DESC%", taskDesc);
     copy(message);
 
     // add notification here
@@ -51,12 +56,13 @@ function handleButtonClick(event) {
 }
 
 function addCopyActionButton() {
+    $("a.version-ninja").remove();
     $("div.task-card").css("min-height", "5em");
     var taskActionsDivs = getTaskCards();
     taskActionsDivs.each(function(idx) {
         var button = $("<a></a>", {
             class: "task-card-actions version-ninja",
-            text: "C",
+            text: actionButtonCharacter,
             title: "Copy to clipboard as commit message"
         });
         button.click(handleButtonClick);
@@ -64,9 +70,30 @@ function addCopyActionButton() {
     });
 }
 
+function loadSettings(callback) {
+    browser.storage.local.get({
+        actionButtonCharacter: "",
+        generatedMessageFormat: ""
+    }, function(items) {
+        if (items.actionButtonCharacter !== "") {
+            actionButtonCharacter = items.actionButtonCharacter;
+        }
+        if (items.generatedMessageFormat !== "") {
+            generatedMessageFormat = items.generatedMessageFormat;
+        }
+        if (typeof callback === 'function') {
+            callback();
+        }
+    });
+}
+
+function detectStorageChange(change) {
+    loadSettings(addCopyActionButton);
+}
+
 function main() {
-    $("a.version-ninja").remove();
-    addCopyActionButton();
+    browser.storage.onChanged.addListener(detectStorageChange);
+    detectStorageChange();
 }
 
 
@@ -78,5 +105,3 @@ $(function() {
         }
     }, 500);
 });
-
-console.log("+#+ end +#+");
