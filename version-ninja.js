@@ -71,7 +71,7 @@ function addCopyActionButton() {
 }
 
 function loadSettings(callback) {
-    browser.storage.local.get({
+    chrome.storage.local.get({
         actionButtonCharacter: "",
         generatedMessageFormat: ""
     }, function(items) {
@@ -92,7 +92,7 @@ function detectStorageChange(change) {
 }
 
 function main() {
-    browser.storage.onChanged.addListener(detectStorageChange);
+    chrome.storage.onChanged.addListener(detectStorageChange);
     detectStorageChange();
 }
 

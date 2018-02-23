@@ -20,12 +20,12 @@ function optionsChanged() {
         generatedMessageFormat: generatedMessageFormat
     }
 
-    browser.storage.local.set(optionData).then(null, onError);
+    chrome.storage.local.set(optionData).then(null, onError);
     notifyStatusChange("Options saved!");
 }
 
 function restoreOptions() {
-    browser.storage.local.get({
+    chrome.storage.local.get({
         actionButtonCharacter: "",
         generatedMessageFormat: ""
     }, function(items) {
