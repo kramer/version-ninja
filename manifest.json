@@ -3,6 +3,8 @@
     "manifest_version": 2,
     "name": "Version Ninja",
     "version": "1.0",
+    "author": "C. Keser",
+    "homepage_url": "http://about.ckeser.com",
 
     "description": "Extends VersionOne to generate formatted (commit) message for a task.",
 
