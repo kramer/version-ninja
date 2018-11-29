@@ -18,6 +18,14 @@ function copy(message) {
     $temp.remove();
 }
 
+function injectScriptToPage(func) {
+    var actualCode = '(' + func + ')();'
+	var script = document.createElement('script');
+	script.textContent = actualCode;
+	(document.head||document.documentElement).appendChild(script);
+	script.remove();
+}
+
 function generateAndCopyMessage() {
     var taskId = $.trim($("div.toolbar>h2").text()).replace("Task ", "");
     var taskDesc = $("h1.title textarea").text();
@@ -39,10 +47,26 @@ function generateAndCopyMessage() {
         .replace("%TASK_DESC%", taskDesc);
     copy(message);
 
-    // add notification here
+	injectScriptToPage(function() { 
+		$("div.toolbar>h2").qtip({
+			content: 'Commit message copied to clipboard!',
+	    	style: 'qtip-light qtip-rounded qtip-shadow',
+	        position: {
+	        	my: 'top left',
+	        	at: 'bottom right'
+	    	},
+	    	show: true,
+	    	hide: {
+		        event: 'click mouseleave',
+                delay: 300,
+        		inactive: 1000
+		    }
+	     });
+	});
 }
 
 function handleButtonClick(event) {
+	event.stopPropagation();
     var button = $(event.target);
     var taskCard = button.parents("div.task-card:first");
     taskCard.find("a.open-by-name.asset-name-link:first")[0].click();
