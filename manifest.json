@@ -2,9 +2,9 @@
 
     "manifest_version": 2,
     "name": "Version Ninja",
-    "version": "2.2",
+    "version": "2.3",
     "author": "Cihan Keser",
-    "homepage_url": "http://about.ckeser.com",
+    "homepage_url": "https://github.com/kramer/version-ninja",
 
     "description": "Extends VersionOne to generate formatted (commit) message for a task.",
 
