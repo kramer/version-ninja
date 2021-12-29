@@ -6,16 +6,11 @@ function getTaskCards() {
 }
 
 function copy(message) {
-    var $temp = $("<div>");
-    $("body").append($temp);
-    $temp.attr("contenteditable", true)
-        .html(message).select()
-        .on("focus", function() {
-            document.execCommand('selectAll', false, null)
-        })
-        .focus();
-    document.execCommand("copy");
-    $temp.remove();
+    navigator.clipboard.writeText(message).then(function() {
+        console.log("Message copied to clipboard successfully!");
+    }, function() {
+        console.error("Unable to write message to clipboard. :-(");
+    });
 }
 
 function injectScriptToPage(func) {
