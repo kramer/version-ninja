@@ -6,3 +6,6 @@ Provides customizable formatted text for a task of a story or defect in VersionO
 # Screenshots
 ![The action triggering link-button added to each task.](https://i.imgur.com/nqEyEqZ.jpg)
 ![When the button is clicked, task page is opened and the generated message is written to clipboard.](https://i.imgur.com/fkHVvw9.jpg)
+
+# Install
+Find version-ninja on [chrome web store](https://chrome.google.com/webstore/detail/version-ninja/bbfnnceplmfkmkpklhnfkollaplccdnk?hl=en) or on [Firefox Add-Ons](https://addons.mozilla.org/en-US/firefox/addon/version-ninja/).
