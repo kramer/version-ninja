@@ -1,5 +1,8 @@
 # Changelog
 
+## v 2.4 (10/01/2022)
+* Listen for taskboard changes (such as changing filters) and reload script.(https://github.com/kramer/version-ninja/commit/fa9c62a56b3ac9471bd77d3b3fee8c78e70889b9)
+
 ## v 2.3 (29/12/2021)
 * Use browser clipboard API to fix an issue which prevented the message from being written to clipboard on some systems. (https://github.com/kramer/version-ninja/pull/1)
 
