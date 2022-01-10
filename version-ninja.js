@@ -112,15 +112,40 @@ function detectStorageChange(change) {
 
 function main() {
     chrome.storage.onChanged.addListener(detectStorageChange);
+    addWrapperDivObserver();
     detectStorageChange();
 }
 
+function addWrapperDivObserver() {
+    var targetNodes = $("div.active>div.window");
+    if(targetNodes.length == 1) {
+        new MutationObserver(onWrapperDivMutation)
+            .observe(targetNodes[0], { childList: true, subtree: true });
+        console.log("Version Ninja is now observing taskboard changes...");
+    } else { 
+        console.log("Version Ninja expected 1 target but found " + targetNodes.length);
+    }
+}
 
-$(function() {
+function onWrapperDivMutation(mutationsList, observer) {
+    for(const mutation of mutationsList) {
+        if (mutation.type === "childList"
+            && mutation.addedNodes.length == 1 
+            && $(mutation.addedNodes[0]).hasClass("TaskBoard")
+        ) {
+                console.log("Version Ninja noticed taskboard change!.");
+                detectStorageChange();
+        }
+    }
+}
+
+function waitTillTaskCardsLoadAndRunMain() {
     var nTimer = setInterval(function() {
         if (getTaskCards().length > 1) {
             clearInterval(nTimer);
             main();
         }
     }, 500);
-});
+}
+
+$(waitTillTaskCardsLoadAndRunMain);
