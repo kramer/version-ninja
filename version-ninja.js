@@ -110,12 +110,6 @@ function detectStorageChange(change) {
     loadSettings(addCopyActionButton);
 }
 
-function main() {
-    chrome.storage.onChanged.addListener(detectStorageChange);
-    addWrapperDivObserver();
-    detectStorageChange();
-}
-
 function addWrapperDivObserver() {
     var targetNodes = $("div.active>div.window");
     if(targetNodes.length == 1) {
@@ -133,19 +127,11 @@ function onWrapperDivMutation(mutationsList, observer) {
             && mutation.addedNodes.length == 1 
             && $(mutation.addedNodes[0]).hasClass("TaskBoard")
         ) {
-                console.log("Version Ninja noticed taskboard change!.");
+                console.log("Version Ninja noticed taskboard change!");
+                chrome.storage.onChanged.addListener(detectStorageChange);
                 detectStorageChange();
         }
     }
 }
 
-function waitTillTaskCardsLoadAndRunMain() {
-    var nTimer = setInterval(function() {
-        if (getTaskCards().length > 1) {
-            clearInterval(nTimer);
-            main();
-        }
-    }, 500);
-}
-
-$(waitTillTaskCardsLoadAndRunMain);
+addWrapperDivObserver();
